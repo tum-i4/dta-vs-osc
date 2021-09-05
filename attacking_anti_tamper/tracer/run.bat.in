@@ -1,0 +1,5 @@
+set mypath=%~dp0
+rmdir /q /s instrace_logs
+mkdir instrace_logs
+mkdir instrace_logs\modules
+${DRRUN_PATH} -c %mypath%instrace_x86.dll -logdir %cd%\instrace_logs -- %*

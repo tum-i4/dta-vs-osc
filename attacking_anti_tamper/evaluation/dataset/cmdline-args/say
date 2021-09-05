@@ -1,0 +1,1 @@
+-a -q -o /home/sip/attacking_anti_tamper/evaluation/dataset/cmdline-args/small_output.au < /home/sip/attacking_anti_tamper/evaluation/dataset/cmdline-args/rsynth_smallinput.txt

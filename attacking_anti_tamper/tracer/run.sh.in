@@ -1,0 +1,13 @@
+#!/bin/bash
+mypath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+rm -r -f instrace_logs
+mkdir -p instrace_logs/modules
+shopt -s nocasematch
+set -o xtrace
+if [ "$1" = "debug" ]
+then
+    @DRRUN_PATH@ -debug -disable_traces -c ${mypath}/libinstrace_x86.so -logdir $(pwd)/instrace_logs -- ${@:2}
+else
+    @DRRUN_PATH@ -c ${mypath}/libinstrace_x86.so -logdir $(pwd)/instrace_logs -- $@
+fi

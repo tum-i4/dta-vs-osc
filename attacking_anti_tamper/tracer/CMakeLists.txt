@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.8)
+project(instrace VERSION 0.1 LANGUAGES C CXX)
+add_library(instrace_x86 SHARED instrace_x86.cpp utils.cpp)
+
+if (MSVC)
+
+else()
+  target_compile_options(instrace_x86 PRIVATE "-Wall" "-Wextra" "-Wno-missing-field-initializers")
+  # target_compile_options(instrace_x86 PRIVATE "-Werror")
+endif()
+
+find_package(DynamoRIO)
+if (NOT DynamoRIO_FOUND)
+  message(FATAL_ERROR "DynamoRIO package required to build")
+endif(NOT DynamoRIO_FOUND)
+configure_DynamoRIO_client(instrace_x86)
+
+set (extensions "drmgr_static;drreg_static;drx_static;drutil")
+foreach (ext ${extensions})
+  use_DynamoRIO_extension(instrace_x86 ${ext})
+endforeach()
+
+if (MSVC)
+  set(DRRUN_PATH "${DynamoRIO_DIR}/../bin64/drrun.exe")
+  file(TO_NATIVE_PATH ${DRRUN_PATH} DRRUN_PATH)
+  configure_file(run.bat.in run.bat)
+else ()
+  set(DRRUN_PATH "${DynamoRIO_DIR}/../bin64/drrun")
+  file(TO_NATIVE_PATH ${DRRUN_PATH} DRRUN_PATH)
+  configure_file(run.sh.in run.sh @ONLY)
+  configure_file(run_manual.sh.in run_manual.sh @ONLY)
+endif()

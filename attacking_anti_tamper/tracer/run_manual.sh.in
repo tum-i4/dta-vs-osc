@@ -1,0 +1,5 @@
+#!/bin/bash
+mypath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+set -o xtrace
+@DRRUN_PATH@ -c ${mypath}/libinstrace_x86.so $@
